@@ -4,30 +4,46 @@ import Pagination from "@/components/Pagination.vue";
 import Loading from "@/components/Loading.vue";
 import ProductForm from "@/components/ProductForm.vue";
 
-import { ref, watchEffect } from "vue";
-import axios from "axios";
+import { onBeforeUpdate, onMounted, onBeforeMount, ref, watchEffect, onUpdated } from "vue";
+// import axios from "axios";
+
+onBeforeMount(() => {
+  console.log("Component will be mopunted soon");
+});
+
+onMounted(() => {
+  console.log("Component has been mounted");
+});
+
+onBeforeUpdate(() => {
+  console.log("Component will be updated soon lagi");
+});
+
+onUpdated(() => {
+  console.log("Component has been updated");
+});
 
 const products = ref([]);
 const page = ref(1);
 const limit = ref(8);
 const isLoading = ref(true);
 
-async function fetchData() {
-  const API_URL = `http://localhost:3000/products?_page=${page.value}&_per_page=${limit.value}`;
-  try {
-    isLoading.value = true;
-    const response = await axios.get(API_URL);
-    products.value = response.data;
-  } catch (error) {
-    console.error(error);
-  } finally {
-    isLoading.value = false;
-  }
-}
+// async function fetchData() {
+//   const API_URL = `http://localhost:3000/products?_page=${page.value}&_per_page=${limit.value}`;
+//   try {
+//     isLoading.value = true;
+//     const response = await axios.get(API_URL);
+//     products.value = response.data;
+//   } catch (error) {
+//     console.error(error);
+//   } finally {
+//     isLoading.value = false;
+//   }
+// }
 
-watchEffect(() => {
-  fetchData();
-});
+// watchEffect(() => {
+//   fetchData();
+// });
 
 function changePage(newPage) {
   if (newPage < 1) return;
@@ -35,17 +51,23 @@ function changePage(newPage) {
   page.value = newPage;
 }
 
-async function createProduct(product) {
-  try {
-    await axios.post("http://localhost:3000/products", product);
-    fetchData();
-  } catch (error) {
-    console.error(error);
-  }
+// async function createProduct(product) {
+//   try {
+//     await axios.post("http://localhost:3000/products", product);
+//     fetchData();
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+
+function nextPage() {
+  page.value++;
 }
 </script>
 
 <template>
+  {{ page }}
+  <button @click="nextPage">next</button>
   <div v-if="isLoading">
     <Loading />
   </div>
