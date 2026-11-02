@@ -1,26 +1,25 @@
 <script setup>
-import { useRouter } from "vue-router";
-
 const { product } = defineProps({
-  product: Object,
+  product: {
+    type: Object,
+    required: true,
+  },
 });
-const router = useRouter();
-
-const goToDetail = () => {
-  router.push({ name: "ProductDetail", params: { id: product.id } });
-};
 </script>
 
 <template>
-  <div class="product-card" @click="goToDetail">
+  <!-- 2. Tambahkan v-if untuk memastikan props.product memiliki data sebelum dirender -->
+  <div class="product-card">
     <img :src="product.image" :alt="product.title" class="product-image" />
     <h2 class="product-title">{{ product.title }}</h2>
     <p class="product-description">{{ product.description }}</p>
-    <span class="product-price">${{ product.price.toFixed(2) }}</span>
+    <!-- Gunakan optional chaining untuk properti berantai seperti .price.toFixed -->
+    <span class="product-price">Rp{{ product.price }}</span>
   </div>
 </template>
 
 <style scoped>
+/* Style Anda yang sudah ada */
 .product-card {
   background-color: #fff;
   padding: 20px;
@@ -56,5 +55,14 @@ const goToDetail = () => {
 .product-price {
   color: #00b894;
   font-weight: bold;
+}
+
+/* Tambahan style untuk placeholder */
+.product-card-placeholder {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  color: #888;
 }
 </style>
